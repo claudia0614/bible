@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 T&T CAMP 암송 웹사이트</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --primary: #2b5a9e;
+            --primary-hover: #1e3f70;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            --border-color: #e2e8f0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .phone-mockup {
+            background: #000000;
+            border: 12px solid #1e1e1e;
+            border-radius: 40px;
+            width: 100%;
+            max-width: 410px;
+            height: 820px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Speaker/Notch */
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 25px;
+            background: #1e1e1e;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+
+        .screen {
+            background: var(--bg-color);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 35px 20px 20px 20px;
+            position: relative;
+        }
+
+        /* Custom Scrollbar for the screen */
+        .screen::-webkit-scrollbar {
+            width: 5px;
+        }
+        .screen::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .screen::-webkit-scrollbar-thumb {
+            background: var(--text-light);
+            border-radius: 10px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed var(--border-color);
+        }
+
+        header h1 {
+            font-size: 14px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        header h2 {
+            font-size: 18px;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .verse-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s;
+        }
+
+        .verse-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .verse-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .verse-num {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            background: #eff6ff;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .eng-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .kor-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            word-break: keep-all;
+        }
+
+        .audio-btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .audio-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .audio-btn:active {
+            transform: scale(0.98);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: auto;
+            padding-top: 20px;
+            font-size: 11px;
+            color: var(--text-light);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 스마트폰 형태의 디자인 목업 프레임 -->
+    <div class="phone-mockup">
+        <div class="screen">
+            <header>
+                <h1>2026 T&T CAMP</h1>
+                <h2>요한복음 14:1-15</h2>
+            </header>
+
+            <div id="verses-container"></div>
+
+            <footer>
+                SUJIYEBONCHURCH
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // 성경 데이터 배열 (영어 다음 한글)
+        const bibleData = [
+            { num: "1", eng: "Do not let your hearts be troubled. You believe in God; believe also in me.", kor: "너희는 마음에 근심하지 말라 하나님을 믿으니 또 나를 믿으라" },
+            { num: "2", eng: "My Father's house has many rooms; if that were not so, would I have told you that I am going there to prepare a place for you?", kor: "내 아버지 집에 거할 곳이 많도다 그렇지 않으면 너희에게 일렀으리라 내가 너희를 위하여 거처를 예비하러 가노니" },
+            { num: "3", eng: "And if I go and prepare a place for you, I will come back and take you to be with me that you also may be where I am.", kor: "가서 너희를 위하여 거처를 예비하면 내가 다시 와서 너희를 내게로 영접하여 나 있는 곳에 너희도 있게 하리라" },
+            { num: "4", eng: "You know the way to the place where I am going.", kor: "내가 어디로 가는지 그 길을 너희가 아느니라" },
+            { num: "5", eng: "Thomas said to him, 'Lord, we don't know where you are going, so how can we know the way?'", kor: "도마가 이르되 주여 주께서 어디로 가시는지 우리가 알지 못하거늘 그 길을 어찌 알겠사옵나이까" },
+            { num: "6", eng: "Jesus answered, 'I am the way and the truth and the life. No one comes to the Father except through me.'", kor: "예수께서 이르시되 내가 곧 길이요 진리요 생명이니 나로 말미암지 않고는 아버지께로 올 자가 없느니라" },
+            { num: "7", eng: "If you really know me, you will know my Father as well. From now on, you do know him and have seen him.", kor: "너희가 나를 알았더라면 내 아버지도 알았으리로다 이제부터는 너희가 그를 알았고 또 보았느니라" },
+            { num: "8", eng: "Philip said, 'Lord, show us the Father and that will be enough for us.'", kor: "빌립이 이르되 주여 아버지를 우리에게 보여 주옵소서 그리하면 족하겠나이다" },
+            { num: "9", eng: "Jesus answered: 'Don't you know me, Philip, even after I have been among you such a long time? Anyone who has seen me has seen the Father. How can you say, 'Show us the Father'?'", kor: "예수께서 이르시되 빌립아 내가 이렇게 오래 너희와 함께 있으되 네가 나를 알지 못하느냐 나를 본 자는 아버지를 보았거늘 어찌하여 아버지를 보이라 하느냐" },
+            { num: "10", eng: "Don't you believe that I am in the Father, and that the Father is in me? The words I say to you I do not speak on my own authority. Rather, it is the Father, living in me, who is doing his work.", kor: "내가 아버지 안에 거하고 아버지는 내 안에 계신 것을 네가 믿지 아니하느냐 내가 너희에게 이르는 말은 스스로 하는 것이 아니라 아버지께서 내 안에 계셔서 그의 일을 하시는 것이라" },
+            { num: "11", eng: "Believe me when I say that I am in the Father and the Father is in me; or at least believe on the evidence of the works themselves.", kor: "내가 아버지 안에 거하고 아버지께서 내 안에 계심을 믿으라 그렇지 못하겠거든 행하는 그 일로 말미암아 나를 믿으라" },
+            { num: "12", eng: "Very truly I tell you, whoever believes in me will do the works I have been doing, and they will do even greater things than these, because I am going to the Father.", kor: "내가 진실로 진실로 너희에게 이르노니 나를 믿는 자는 내가 하는 일을 그도 할 것이요 또한 그보다 큰 일도 하리니 이는 내가 아버지께로 감이라" },
+            { num: "13", eng: "And I will do whatever you ask in my name, so that the Father may be glorified in the Son.", kor: "너희가 내 이름으로 무엇을 구하든지 내가 행하리니 이는 아버지로 하여금 아들로 말미암아 영광을 받으시게 하려 함이라" },
+            { num: "14", eng: "You may ask me for anything in my name, and I will do it.", kor: "내 이름으로 무엇이든지 내게 구하면 내가 행하리라" },
+            { num: "15", eng: "If you love me, keep my commands.", kor: "너희가 나를 사랑하면 나의 계명을 지키리라" }
+        ];
+
+        const container = document.getElementById('verses-container');
+
+        bibleData.forEach((v, index) => {
+            const card = document.createElement('div');
+            card.className = 'verse-card';
+            card.innerHTML = `
+                <div class="verse-header">
+                    <span class="verse-num">John 14:${v.num}</span>
+                </div>
+                <div class="eng-text">${v.eng}</div>
+                <div class="kor-text">${v.kor}</div>
+                <button class="audio-btn" onclick="playTTS(${index})">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                    영어 ➔ 한국어 듣기
+                </button>
+            `;
+            container.appendChild(card);
+        });
+
+        function playTTS(index) {
+            window.speechSynthesis.cancel(); // 기존 재생 중인 사운드 취소
+
+            const data = bibleData[index];
+            
+            // 영어 설정
+            const englishSpeech = new SpeechSynthesisUtterance(data.eng);
+            englishSpeech.lang = 'en-US';
+            englishSpeech.rate = 0.85; // 암송하기 알맞은 약간 느린 속도
+
+            // 한국어 설정
+            const koreanSpeech = new SpeechSynthesisUtterance(data.kor);
+            koreanSpeech.lang = 'ko-KR';
+            koreanSpeech.rate = 1.0;
+
+            // 영어 끝나면 한국어 연속 재생
+            englishSpeech.onend = () => {
+                window.speechSynthesis.speak(koreanSpeech);
+            };
+
+            window.speechSynthesis.speak(englishSpeech);
+        }
+    </script>
+</body>
+</html>
